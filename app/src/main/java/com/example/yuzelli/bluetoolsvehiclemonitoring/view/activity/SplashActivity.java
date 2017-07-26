@@ -9,11 +9,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.widget.ImageView;
-import com.example.yuzelli.fooddelivered.R;
-import com.example.yuzelli.fooddelivered.base.BaseActivity;
-import com.example.yuzelli.fooddelivered.bean.UserInfo;
-import com.example.yuzelli.fooddelivered.constants.ConstantsUtils;
-import com.example.yuzelli.fooddelivered.utils.SharePreferencesUtil;
+import com.example.yuzelli.bluetoolsvehiclemonitoring.R;
+import com.example.yuzelli.bluetoolsvehiclemonitoring.base.BaseActivity;
+import com.example.yuzelli.bluetoolsvehiclemonitoring.bean.UserInfo;
+import com.example.yuzelli.bluetoolsvehiclemonitoring.constants.ConstantsUtils;
+import com.example.yuzelli.bluetoolsvehiclemonitoring.utils.SharePreferencesUtil;
 
 import java.util.Random;
 
@@ -85,9 +85,6 @@ public class SplashActivity extends BaseActivity {
                         MainActivity.actionStart(context);
                     }
                     finish();
-                    break;
-                case ConstantsUtils.LOGIN_GET_DATA:
-
                     break;
                 default:
                     break;

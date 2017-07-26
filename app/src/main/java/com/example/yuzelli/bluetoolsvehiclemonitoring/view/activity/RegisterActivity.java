@@ -2,7 +2,6 @@ package com.example.yuzelli.bluetoolsvehiclemonitoring.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
@@ -11,11 +10,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.yuzelli.fooddelivered.R;
-import com.example.yuzelli.fooddelivered.base.BaseActivity;
-import com.example.yuzelli.fooddelivered.constants.ConstantsUtils;
-import com.example.yuzelli.fooddelivered.https.OkHttpClientManager;
-import com.example.yuzelli.fooddelivered.utils.OtherUtils;
+import com.example.yuzelli.bluetoolsvehiclemonitoring.R;
+import com.example.yuzelli.bluetoolsvehiclemonitoring.base.BaseActivity;
+import com.example.yuzelli.bluetoolsvehiclemonitoring.constants.ConstantsUtils;
+import com.example.yuzelli.bluetoolsvehiclemonitoring.https.OkHttpClientManager;
+import com.example.yuzelli.bluetoolsvehiclemonitoring.utils.OtherUtils;
 
 import org.json.JSONObject;
 
@@ -23,7 +22,6 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Request;
 
@@ -48,7 +46,6 @@ public class RegisterActivity extends BaseActivity {
     @BindView(R.id.bt_register)
     Button btRegister;
 
-    private RegisterHandler handler;
 
 
     @Override
@@ -60,7 +57,7 @@ public class RegisterActivity extends BaseActivity {
     protected void binEvent() {
         tvCenter.setText("用户注册");
         tvRight.setVisibility(View.GONE);
-        handler = new RegisterHandler();
+
 
     }
 
@@ -94,39 +91,12 @@ public class RegisterActivity extends BaseActivity {
     }
 
     //101：注册成功；102注册失败；103密码或者电话号码为空；104已注册过了
-    private void doRegisterAction(String mobile, String password,String username) {
-        HashMap<String, String> map = new HashMap<>();
-        map.put("mobile", mobile);
-        map.put("password", password);
-        map.put("stName", username);
-        OkHttpClientManager.postAsync(ConstantsUtils.ADDRESS_URL + ConstantsUtils.REGISTER_USER, map, new OkHttpClientManager.DataCallBack() {
-            @Override
-            public void requestFailure(Request request, IOException e) {
-                showToast("获取数据失败！");
-            }
+    private void doRegisterAction(String mobile, String password, String username) {
 
-            @Override
-            public void requestSuccess(String result) throws Exception {
-                JSONObject json = new JSONObject(result);
-                int code = json.optInt("code");
-                if (code == 101) {
-                    showToast("注册成功！");
-                    handler.sendEmptyMessage(ConstantsUtils.REGISTER_GET_DATA);
-                } else if (code == 102) {
-                    showToast("注册失败！");
-                } else if (code == 103) {
-                    showToast("密码或者电话号码为空！");
-                } else if (code == 104) {
-                    showToast("已注册过了！");
-                } else {
-                    showToast("数据获取失败！");
-                }
-            }
-        });
 
     }
 
-    private boolean verification(String mobile, String password, String confirmPassword,String u_n) {
+    private boolean verification(String mobile, String password, String confirmPassword, String u_n) {
         boolean flag = true;
         if (u_n.equals("")) {
             showToast("请输入用户名！");
@@ -158,17 +128,4 @@ public class RegisterActivity extends BaseActivity {
         return flag;
     }
 
-    class RegisterHandler extends Handler {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case ConstantsUtils.REGISTER_GET_DATA:
-                    finish();
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
 }

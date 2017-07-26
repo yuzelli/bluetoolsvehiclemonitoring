@@ -15,29 +15,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.yuzelli.fooddelivered.R;
-import com.example.yuzelli.fooddelivered.base.BaseActivity;
-import com.example.yuzelli.fooddelivered.bean.UserInfo;
-import com.example.yuzelli.fooddelivered.constants.ConstantsUtils;
-import com.example.yuzelli.fooddelivered.https.OkHttpClientManager;
-import com.example.yuzelli.fooddelivered.reciver.JPushReceiver;
-import com.example.yuzelli.fooddelivered.utils.OtherUtils;
-import com.example.yuzelli.fooddelivered.utils.SharePreferencesUtil;
 
-import org.json.JSONObject;
+import com.example.yuzelli.bluetoolsvehiclemonitoring.R;
+import com.example.yuzelli.bluetoolsvehiclemonitoring.base.BaseActivity;
+import com.example.yuzelli.bluetoolsvehiclemonitoring.bean.UserInfo;
+import com.example.yuzelli.bluetoolsvehiclemonitoring.utils.OtherUtils;
 
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.jpush.android.api.JPushInterface;
-import cn.jpush.android.api.TagAliasCallback;
-import okhttp3.Request;
+
 
 
 public class LoginActivity extends BaseActivity {
@@ -56,7 +43,7 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.bt_login)
     Button btLogin;
 
-    private LoginHandler handler;
+
     private Context context;
     private UserInfo userInfo;
 
@@ -71,7 +58,6 @@ public class LoginActivity extends BaseActivity {
         ivLeft.setVisibility(View.GONE);
         tvRight.setText("注册");
         tvCenter.setText("用户登录");
-        handler = new LoginHandler();
         context = this;
 
     }
@@ -107,38 +93,7 @@ public class LoginActivity extends BaseActivity {
      * code =201表示电话号码不对，code =202表示密码错误，code =203表示未知错误，
      */
     private void doLoginAction(String mobile, String password) {
-        final HashMap<String, String> map = new HashMap<>();
-        map.put("mobile", mobile);
-        map.put("password", password);
-        OkHttpClientManager.postAsync(ConstantsUtils.ADDRESS_URL + ConstantsUtils.USER_LOGIN, map, new OkHttpClientManager.DataCallBack() {
-            @Override
-            public void requestFailure(Request request, IOException e) {
-                showToast("获取数据失败！");
-            }
 
-            @Override
-            public void requestSuccess(String result) throws Exception {
-                JSONObject json = new JSONObject(result);
-                int code = json.optInt("code");
-                if (code == 200) {
-                    showToast("登录成功！");
-                    Message msg = new Message();
-                    Map<String,String> uMap = new HashMap<String, String>();
-                    uMap.put("stId",json.optString("stId"));
-                    uMap.put("stName",json.optString("stName"));
-                    msg.obj = uMap;
-
-                    msg.what = ConstantsUtils.LOGIN_GET_DATA;
-                    handler.sendMessage(msg);
-                } else if (code == 201) {
-                    showToast("用户不存在！");
-                } else if (code == 202) {
-                    showToast("密码错误！");
-                }else {
-                    showToast("获取数据失败！");
-                }
-            }
-        });
     }
 
     private boolean verification(String mobile, String password) {
@@ -162,32 +117,7 @@ public class LoginActivity extends BaseActivity {
 
     }
 
-    class LoginHandler extends Handler {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case ConstantsUtils.LOGIN_GET_DATA:
-                    String mobile = userPhone.getText().toString().trim();
-                    String password = etPassword.getText().toString().trim();
-                    Map<String,String> uMap = (Map<String, String>) msg.obj;
-                    String stId = uMap.get("stId");
-                    String userName = uMap.get("stName");
-                    SharePreferencesUtil.saveObject(context, ConstantsUtils.SP_LOGIN_USER_INFO, new UserInfo(mobile, password,stId,userName));
-                    MainActivity.actionStart(context);
-                    JPushInterface.setAlias(context, stId, new TagAliasCallback() {
-                        @Override
-                        public void gotResult(int i, String s, Set<String> set) {
-                            Log.d("--->",i+s+"");
-                        }
-                    });
-                    finish();
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
+
 
     long exitTime = 0;
     @Override

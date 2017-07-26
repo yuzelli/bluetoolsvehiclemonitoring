@@ -6,6 +6,9 @@ import android.view.Window;
 import android.view.WindowManager;
 
 
+import com.example.yuzelli.bluetoolsvehiclemonitoring.utils.ActivityCollectorUtil;
+import com.example.yuzelli.bluetoolsvehiclemonitoring.utils.MyToast;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 

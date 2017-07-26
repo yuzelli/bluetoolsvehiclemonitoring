@@ -13,8 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.yuzelli.fooddelivered.R;
-import com.example.yuzelli.fooddelivered.app.MyApplication;
+import com.example.yuzelli.bluetoolsvehiclemonitoring.R;
+import com.example.yuzelli.bluetoolsvehiclemonitoring.app.MyApplication;
 
 
 public class MyToast extends Toast{

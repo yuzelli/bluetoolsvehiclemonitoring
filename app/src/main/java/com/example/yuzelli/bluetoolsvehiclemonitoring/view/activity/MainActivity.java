@@ -11,11 +11,9 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.yuzelli.fooddelivered.R;
-import com.example.yuzelli.fooddelivered.base.BaseActivity;
-import com.example.yuzelli.fooddelivered.view.fragment.OrderFragment;
-import com.example.yuzelli.fooddelivered.view.fragment.NowOrderFragment;
-import com.example.yuzelli.fooddelivered.view.fragment.PersonalFragment;
+import com.example.yuzelli.bluetoolsvehiclemonitoring.R;
+import com.example.yuzelli.bluetoolsvehiclemonitoring.base.BaseActivity;
+import com.example.yuzelli.bluetoolsvehiclemonitoring.view.fragment.PersonalFragment;
 
 public class MainActivity extends BaseActivity {
 
@@ -26,7 +24,7 @@ public class MainActivity extends BaseActivity {
     private LayoutInflater layoutInflater;
 
     //定义数组来存放user的Fragment界面
-    private Class fragmentArray[] = {NowOrderFragment.class, OrderFragment.class, PersonalFragment.class};
+    private Class fragmentArray[] = {PersonalFragment.class};
     //定义数组来存放的按钮图片
     private int tabImageViewArray[] = {R.drawable.tab_yan, R.drawable.tab_order,
             R.drawable.tab_mine};

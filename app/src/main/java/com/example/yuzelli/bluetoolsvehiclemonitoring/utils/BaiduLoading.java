@@ -13,7 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
-import com.example.yuzelli.fooddelivered.R;
+import com.example.yuzelli.bluetoolsvehiclemonitoring.R;
 
 
 /**
