@@ -14,7 +14,7 @@ import android.graphics.drawable.NinePatchDrawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-import com.example.yuzelli.fooddelivered.R;
+import com.example.yuzelli.bluetoolsvehiclemonitoring.R;
 
 
 /**

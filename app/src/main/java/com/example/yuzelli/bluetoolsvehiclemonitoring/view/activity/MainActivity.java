@@ -14,6 +14,8 @@ import android.widget.Toast;
 import com.example.yuzelli.bluetoolsvehiclemonitoring.R;
 import com.example.yuzelli.bluetoolsvehiclemonitoring.base.BaseActivity;
 import com.example.yuzelli.bluetoolsvehiclemonitoring.view.fragment.PersonalFragment;
+import com.example.yuzelli.bluetoolsvehiclemonitoring.view.fragment.SetFragment;
+import com.example.yuzelli.bluetoolsvehiclemonitoring.view.fragment.WraningFragment;
 
 public class MainActivity extends BaseActivity {
 
@@ -24,12 +26,12 @@ public class MainActivity extends BaseActivity {
     private LayoutInflater layoutInflater;
 
     //定义数组来存放user的Fragment界面
-    private Class fragmentArray[] = {PersonalFragment.class};
+    private Class fragmentArray[] = {SetFragment.class, WraningFragment.class, PersonalFragment.class};
     //定义数组来存放的按钮图片
-    private int tabImageViewArray[] = {R.drawable.tab_yan, R.drawable.tab_order,
-            R.drawable.tab_mine};
+    private int tabImageViewArray[] = { R.drawable.tab_set, R.drawable.tab_wraning,
+           R.drawable.tab_mine};
     //Tab选项卡的文字
-    private String tabtTextViewArray[] = {"当前任务", "订单", "个人中心"};
+    private String tabtTextViewArray[] = {"设备" ,"警报设置","个人设置"};
     @Override
     protected int layoutInit() {
         return R.layout.activity_main;

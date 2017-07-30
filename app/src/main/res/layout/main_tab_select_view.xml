@@ -12,7 +12,7 @@
         android:layout_height="45dp"
         android:focusable="false"
         android:padding="3dp"
-        android:src="@drawable/tab_yan">
+        android:src="@drawable/tab_set">
     </ImageView>
 
     <TextView

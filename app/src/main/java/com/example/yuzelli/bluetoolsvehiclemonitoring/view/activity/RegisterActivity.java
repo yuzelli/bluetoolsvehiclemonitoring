@@ -12,9 +12,11 @@ import android.widget.TextView;
 
 import com.example.yuzelli.bluetoolsvehiclemonitoring.R;
 import com.example.yuzelli.bluetoolsvehiclemonitoring.base.BaseActivity;
+import com.example.yuzelli.bluetoolsvehiclemonitoring.bean.UserInfo;
 import com.example.yuzelli.bluetoolsvehiclemonitoring.constants.ConstantsUtils;
 import com.example.yuzelli.bluetoolsvehiclemonitoring.https.OkHttpClientManager;
 import com.example.yuzelli.bluetoolsvehiclemonitoring.utils.OtherUtils;
+import com.example.yuzelli.bluetoolsvehiclemonitoring.utils.SharePreferencesUtil;
 
 import org.json.JSONObject;
 
@@ -92,7 +94,9 @@ public class RegisterActivity extends BaseActivity {
 
     //101：注册成功；102注册失败；103密码或者电话号码为空；104已注册过了
     private void doRegisterAction(String mobile, String password, String username) {
-
+       UserInfo userInfo=new UserInfo (mobile,password,username);
+        SharePreferencesUtil.saveObject(RegisterActivity.this,ConstantsUtils.SP_LOGIN_USER_INFO,userInfo);
+        finish();
 
     }
 

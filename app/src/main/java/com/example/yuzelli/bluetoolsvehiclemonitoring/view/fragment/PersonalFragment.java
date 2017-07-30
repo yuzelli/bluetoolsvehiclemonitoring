@@ -1,11 +1,10 @@
 package com.example.yuzelli.bluetoolsvehiclemonitoring.view.fragment;
 
+
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
-
 import android.view.View;
-
 
 import com.example.yuzelli.bluetoolsvehiclemonitoring.R;
 import com.example.yuzelli.bluetoolsvehiclemonitoring.base.BaseFragment;
@@ -28,6 +27,8 @@ public class PersonalFragment extends BaseFragment {
     protected int layoutInit() {
         return R.layout.fragment_personal;
     }
+
+
 
     @Override
     protected void bindEvent(View v) {

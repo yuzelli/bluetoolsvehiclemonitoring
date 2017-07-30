@@ -2,11 +2,6 @@ package com.example.yuzelli.bluetoolsvehiclemonitoring.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -19,7 +14,9 @@ import android.widget.Toast;
 import com.example.yuzelli.bluetoolsvehiclemonitoring.R;
 import com.example.yuzelli.bluetoolsvehiclemonitoring.base.BaseActivity;
 import com.example.yuzelli.bluetoolsvehiclemonitoring.bean.UserInfo;
+import com.example.yuzelli.bluetoolsvehiclemonitoring.constants.ConstantsUtils;
 import com.example.yuzelli.bluetoolsvehiclemonitoring.utils.OtherUtils;
+import com.example.yuzelli.bluetoolsvehiclemonitoring.utils.SharePreferencesUtil;
 
 
 import butterknife.BindView;
@@ -93,7 +90,18 @@ public class LoginActivity extends BaseActivity {
      * code =201表示电话号码不对，code =202表示密码错误，code =203表示未知错误，
      */
     private void doLoginAction(String mobile, String password) {
-
+      UserInfo userInfo = (UserInfo) SharePreferencesUtil.readObject(LoginActivity.this, ConstantsUtils.SP_LOGIN_USER_INFO);
+     if (userInfo==null){
+         showToast("用户未注册！");
+         return;
+     }
+        if (userInfo.getMobile().equals(mobile)&&userInfo.getPassword().equals(password)){
+           MainActivity.actionStart(LoginActivity.this);
+            finish();
+        }else {
+            showToast("用户手机号或密码错误！");
+            return;
+        }
     }
 
     private boolean verification(String mobile, String password) {
