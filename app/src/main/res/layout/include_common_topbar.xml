@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:id="@+id/rl_topBar"
-    android:background="@color/main_color"
+    android:background="#6CAE6C"
     android:orientation="vertical">
 
     <ImageView
