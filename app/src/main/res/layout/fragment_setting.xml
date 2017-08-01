@@ -7,11 +7,23 @@
         android:id="@+id/include_common_topbar"
         layout="@layout/include_common_topbar" />
 
+    <TextView
+        android:id="@+id/tv_connect_state"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:gravity="center"
+        android:layout_below="@+id/include_common_topbar"
+        android:textSize="20sp"
+        android:text="当前无连接设备"/>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
-        android:layout_below="@+id/include_common_topbar">
+        android:layout_above="@+id/ll_bottom"
+        android:layout_below="@+id/tv_connect_state">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -218,6 +230,38 @@
         </RelativeLayout>
 
     </FrameLayout>
+    <LinearLayout
+        android:id="@+id/ll_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentBottom="true">
+        <Button
+            android:id="@+id/btn_blth_connect"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:layout_marginBottom="5dp"
+            android:background="#6CAE6C"
+            android:textSize="20sp"
+            android:layout_margin="10dp"
+            android:textColor="@color/white"
+            android:layout_below="@+id/include_common_topbar"
+            android:text="连接设备"/>
+        <Button
+            android:id="@+id/btn_blth_disconnect"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:layout_marginBottom="5dp"
+            android:background="#6CAE6C"
+            android:textSize="20sp"
+            android:layout_margin="10dp"
+            android:textColor="@color/white"
+            android:layout_below="@+id/include_common_topbar"
+            android:text="断开设备"/>
+    </LinearLayout>
 
 
 </RelativeLayout>

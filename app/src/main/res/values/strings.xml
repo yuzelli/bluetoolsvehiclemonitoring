@@ -15,5 +15,6 @@
     <string name="finish">完成</string>
     <string name="receive">接单</string>
     <string name="send_verification_code">发送验证码</string>
-
+    <string name="progress_scaning">正在扫描</string>
+    <string name="progress_connecting">正在连接</string>
 </resources>
