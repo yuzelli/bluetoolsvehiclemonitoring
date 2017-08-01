@@ -21,7 +21,15 @@ import android.widget.Toast;
 
 import com.example.yuzelli.bluetoolsvehiclemonitoring.R;
 import com.example.yuzelli.bluetoolsvehiclemonitoring.base.BaseFragment;
+import com.example.yuzelli.bluetoolsvehiclemonitoring.bean.ToothInfoBean;
+import com.example.yuzelli.bluetoolsvehiclemonitoring.constants.ConstantsUtils;
 import com.example.yuzelli.bluetoolsvehiclemonitoring.utils.BluetoothChatUtil;
+import com.example.yuzelli.bluetoolsvehiclemonitoring.utils.SharePreferencesUtil;
+import com.example.yuzelli.bluetoolsvehiclemonitoring.view.activity.DeviceSetActivity;
+import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Set;
 
@@ -41,6 +49,8 @@ public class SetFragment extends BaseFragment {
     TextView tvCenter;
     @BindView(R.id.tv_right)
     TextView tvRight;
+    @BindView(R.id.tv_mubiao)
+    TextView tv_mubiao;
     @BindView(R.id.tv_jiaquan)
     TextView tvJiaquan;
     @BindView(R.id.img_jiaquan)
@@ -79,7 +89,7 @@ public class SetFragment extends BaseFragment {
 
     private final static String TAG = "SetFragment";
     //设置绑定的蓝牙名称
-    public static final String BLUETOOTH_NAME = "Che2-TL00M";
+    public static String BLUETOOTH_NAME = "";
 
     private BluetoothAdapter mBluetoothAdapter;
     private int REQUEST_ENABLE_BT = 1;
@@ -87,7 +97,7 @@ public class SetFragment extends BaseFragment {
 
     private ProgressDialog mProgressDialog;
     private BluetoothChatUtil mBlthChatUtil;
-
+   private ToothInfoBean toothInfo;
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -115,7 +125,9 @@ public class SetFragment extends BaseFragment {
                     String str = new String(buf, 0, buf.length);
                     //Toast.makeText(getApplicationContext(), "读成功" + str, Toast.LENGTH_SHORT).show();
                     showToast("读成功" + "-->" + str);
-
+                    Gson gson = new Gson();
+                    toothInfo = gson.fromJson(str,ToothInfoBean.class);
+                    updataView();
                     break;
                 }
                 case BluetoothChatUtil.MESSAGE_WRITE: {
@@ -131,6 +143,15 @@ public class SetFragment extends BaseFragment {
 
         ;
     };
+
+    private void updataView() {
+        tvJiaquan.setText(toothInfo.getJaquan());
+        tvBen.setText(toothInfo.getBen());
+        tvCo2.setText(toothInfo.getCo2());
+        tvCo.setText(toothInfo.getCo());
+        tvSo2.setText(toothInfo.getSo2());
+        tvNo.setText(toothInfo.getNo());
+    }
 
 
     @Override
@@ -193,6 +214,14 @@ public class SetFragment extends BaseFragment {
                 }
             }
         }
+        String mubiao = (String) SharePreferencesUtil.readObject(getActivity(), ConstantsUtils.SP_MU_BIAO_DEVICE_INFO);
+        if (mubiao==null||mubiao.equals("")){
+            tv_mubiao.setText("目标设备：无");
+        }else {
+            BLUETOOTH_NAME = mubiao;
+            tv_mubiao.setText("目标设备："+BLUETOOTH_NAME);
+        }
+
     }
 
 
@@ -253,6 +282,9 @@ public class SetFragment extends BaseFragment {
     @OnClick({R.id.tv_right, R.id.btn_blth_connect,R.id.btn_blth_disconnect})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.tv_right:
+                DeviceSetActivity.startAction(getActivity());
+                break;
             case R.id.btn_blth_disconnect:
                 if (mBlthChatUtil.getState() != BluetoothChatUtil.STATE_CONNECTED) {
                     showToast("蓝牙未连接");

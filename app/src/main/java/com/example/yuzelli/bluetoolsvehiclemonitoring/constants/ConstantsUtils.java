@@ -11,6 +11,8 @@ public class ConstantsUtils {
 
     //保持登录用户信息
     public static final String SP_LOGIN_USER_INFO = "UserInfo";
+    public static final String SP_MU_BIAO_DEVICE_INFO = "MUBIAOSHEBEI";
+    public static final String SP_TIME = "TIME_SETING";
 
 
 

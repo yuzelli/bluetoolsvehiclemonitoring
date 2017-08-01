@@ -8,14 +8,22 @@
         layout="@layout/include_common_topbar" />
 
     <TextView
-        android:id="@+id/tv_connect_state"
+        android:id="@+id/tv_mubiao"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:gravity="center"
         android:layout_below="@+id/include_common_topbar"
+        android:textSize="20sp"
+        android:text="目标设备：无"/> <TextView
+        android:id="@+id/tv_connect_state"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:gravity="center"
+        android:layout_below="@+id/tv_mubiao"
         android:textSize="20sp"
         android:text="当前无连接设备"/>
 
