@@ -46,6 +46,9 @@ public class SplashActivity extends BaseActivity {
         iv_spl_background.setImageResource(SPLASH_ARRAY[r.nextInt(SPLASH_ARRAY.length)]);
         context = SplashActivity.this;
         animateImage();
+        if(SharePreferencesUtil.readObject(this,ConstantsUtils.SP_TIME)==null){
+            SharePreferencesUtil.saveObject(this,ConstantsUtils.SP_TIME,false);
+        }
 
     }
 

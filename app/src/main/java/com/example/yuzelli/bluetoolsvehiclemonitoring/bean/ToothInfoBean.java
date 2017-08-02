@@ -7,14 +7,17 @@ import java.io.Serializable;
  */
 
 public class ToothInfoBean implements Serializable {
-    private String jaquan;
-    private String ben;
-    private String co2;
-    private String co;
-    private String so2;
-    private String no;
+    private double jaquan;
+    private double ben;
+    private double co2;
+    private double co;
+    private double so2;
+    private double no;
 
-    public ToothInfoBean(String jaquan, String ben, String co2, String co, String so2, String no) {
+    public ToothInfoBean() {
+    }
+
+    public ToothInfoBean(double jaquan, double ben, double co2, double co, double so2, double no) {
         this.jaquan = jaquan;
         this.ben = ben;
         this.co2 = co2;
@@ -23,51 +26,51 @@ public class ToothInfoBean implements Serializable {
         this.no = no;
     }
 
-    public String getJaquan() {
+    public double getJaquan() {
         return jaquan;
     }
 
-    public void setJaquan(String jaquan) {
+    public void setJaquan(double jaquan) {
         this.jaquan = jaquan;
     }
 
-    public String getBen() {
+    public double getBen() {
         return ben;
     }
 
-    public void setBen(String ben) {
+    public void setBen(double ben) {
         this.ben = ben;
     }
 
-    public String getCo2() {
+    public double getCo2() {
         return co2;
     }
 
-    public void setCo2(String co2) {
+    public void setCo2(double co2) {
         this.co2 = co2;
     }
 
-    public String getCo() {
+    public double getCo() {
         return co;
     }
 
-    public void setCo(String co) {
+    public void setCo(double co) {
         this.co = co;
     }
 
-    public String getSo2() {
+    public double getSo2() {
         return so2;
     }
 
-    public void setSo2(String so2) {
+    public void setSo2(double so2) {
         this.so2 = so2;
     }
 
-    public String getNo() {
+    public double getNo() {
         return no;
     }
 
-    public void setNo(String no) {
+    public void setNo(double no) {
         this.no = no;
     }
 }

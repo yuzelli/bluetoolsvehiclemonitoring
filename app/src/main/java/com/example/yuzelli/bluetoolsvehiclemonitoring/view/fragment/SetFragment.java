@@ -1,5 +1,7 @@
 package com.example.yuzelli.bluetoolsvehiclemonitoring.view.fragment;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -7,9 +9,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -24,6 +29,7 @@ import com.example.yuzelli.bluetoolsvehiclemonitoring.base.BaseFragment;
 import com.example.yuzelli.bluetoolsvehiclemonitoring.bean.ToothInfoBean;
 import com.example.yuzelli.bluetoolsvehiclemonitoring.constants.ConstantsUtils;
 import com.example.yuzelli.bluetoolsvehiclemonitoring.utils.BluetoothChatUtil;
+import com.example.yuzelli.bluetoolsvehiclemonitoring.utils.DialogUtils;
 import com.example.yuzelli.bluetoolsvehiclemonitoring.utils.SharePreferencesUtil;
 import com.example.yuzelli.bluetoolsvehiclemonitoring.view.activity.DeviceSetActivity;
 import com.google.gson.Gson;
@@ -51,6 +57,10 @@ public class SetFragment extends BaseFragment {
     TextView tvRight;
     @BindView(R.id.tv_mubiao)
     TextView tv_mubiao;
+    @BindView(R.id.tv_all)
+    TextView tv_all;
+    @BindView(R.id.img_all)
+    ImageView img_all;
     @BindView(R.id.tv_jiaquan)
     TextView tvJiaquan;
     @BindView(R.id.img_jiaquan)
@@ -86,7 +96,7 @@ public class SetFragment extends BaseFragment {
     @BindView(R.id.tv_connect_state)
     TextView tv_connect_state;
 
-
+    private MediaPlayer player;
     private final static String TAG = "SetFragment";
     //设置绑定的蓝牙名称
     public static String BLUETOOTH_NAME = "";
@@ -97,7 +107,10 @@ public class SetFragment extends BaseFragment {
 
     private ProgressDialog mProgressDialog;
     private BluetoothChatUtil mBlthChatUtil;
-   private ToothInfoBean toothInfo;
+    private ToothInfoBean toothInfo;
+    private boolean isPlaySound = false;
+    private Dialog dialog;
+
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -125,8 +138,8 @@ public class SetFragment extends BaseFragment {
                     String str = new String(buf, 0, buf.length);
                     //Toast.makeText(getApplicationContext(), "读成功" + str, Toast.LENGTH_SHORT).show();
                     showToast("读成功" + "-->" + str);
-                    Gson gson = new Gson();
-                    toothInfo = gson.fromJson(str,ToothInfoBean.class);
+
+                    toothInfo =getToothInfo(str);
                     updataView();
                     break;
                 }
@@ -144,13 +157,166 @@ public class SetFragment extends BaseFragment {
         ;
     };
 
+    private ToothInfoBean getToothInfo(String str) {
+        str = str.substring(0,str.indexOf("}")+1);
+        ToothInfoBean t = new ToothInfoBean();
+        try {
+            JSONObject json = new JSONObject(str);
+            double j = json.getDouble("jiaquan");
+            t.setJaquan(j);
+            t.setBen(json.getDouble("ben"));
+            t.setCo2(json.getDouble("co2"));
+            t.setCo(json.getDouble("co"));
+            t.setSo2(json.getDouble("sc2"));
+            t.setNo(json.getDouble("no"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        return t;
+    }
+
+    private final static double jqw = 0.02f;
+    private final static double jqj = 0.06f;
+
+    private final static double benw = 1f;
+    private final static double benj = 24f;
+
+    private final static double co2w = 1000f;
+    private final static double co2j = 2000f;
+
+    private final static double cow = 200f;
+    private final static double coj = 400f;
+
+    private final static double so2w = 3f;
+    private final static double so2j = 20f;
+
+    private final static double now = 5f;
+    private final static double noj = 20f;
+    boolean isShowDialogFlag = false;
+    boolean isShowSoundFlag = false;
     private void updataView() {
-        tvJiaquan.setText(toothInfo.getJaquan());
-        tvBen.setText(toothInfo.getBen());
-        tvCo2.setText(toothInfo.getCo2());
-        tvCo.setText(toothInfo.getCo());
-        tvSo2.setText(toothInfo.getSo2());
-        tvNo.setText(toothInfo.getNo());
+        if (dialog!=null){
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+        }
+         isShowDialogFlag = false;
+         isShowSoundFlag = false;
+
+        tvJiaquan.setText("甲醛：" + toothInfo.getJaquan() + "mg/m³");
+        tvBen.setText("苯：" + toothInfo.getBen() + "mg/m³");
+        tvCo2.setText("二氧化碳" + toothInfo.getCo2() + "mg/m³");
+        tvCo.setText("一氧化碳" + toothInfo.getCo() + "mg/m³");
+        tvSo2.setText("二氧化硫" + toothInfo.getSo2() + "mg/m³");
+        tvNo.setText("氮氧化合物：" + toothInfo.getNo() + "mg/m³");
+        if (toothInfo.getJaquan() <= jqw) {
+            imgJiaquan.setImageResource(R.drawable.ic_indicate_green);
+        } else if (toothInfo.getJaquan() <= jqj) {
+            imgJiaquan.setImageResource(R.drawable.ic_indicate_orgin);
+            isShowDialogFlag = true;
+        } else {
+            imgJiaquan.setImageResource(R.drawable.ic_indicate_red);
+            isShowSoundFlag = true;
+        }
+        if (toothInfo.getBen() <= benw) {
+            imgBen.setImageResource(R.drawable.ic_indicate_green);
+        } else if (toothInfo.getBen() <= benj) {
+            imgBen.setImageResource(R.drawable.ic_indicate_orgin);
+            isShowDialogFlag = true;
+        } else {
+            imgBen.setImageResource(R.drawable.ic_indicate_red);
+            isShowDialogFlag = true;
+        }
+        if (toothInfo.getCo2() <= co2w) {
+            imgCo2.setImageResource(R.drawable.ic_indicate_green);
+        } else if (toothInfo.getCo2() <= co2j) {
+            imgCo2.setImageResource(R.drawable.ic_indicate_orgin);
+            isShowDialogFlag = true;
+        } else {
+            imgCo2.setImageResource(R.drawable.ic_indicate_red);
+            isShowDialogFlag = true;
+        }
+        if (toothInfo.getCo() <= cow) {
+            imgCo.setImageResource(R.drawable.ic_indicate_green);
+        } else if (toothInfo.getCo() <= coj) {
+            imgCo.setImageResource(R.drawable.ic_indicate_orgin);
+            isShowDialogFlag = true;
+        } else {
+            imgCo.setImageResource(R.drawable.ic_indicate_red);
+            isShowDialogFlag = true;
+        }
+        if (toothInfo.getSo2() <= so2w) {
+            imgSo2.setImageResource(R.drawable.ic_indicate_green);
+        } else if (toothInfo.getSo2() <= so2j) {
+            imgSo2.setImageResource(R.drawable.ic_indicate_orgin);
+            isShowDialogFlag = true;
+        } else {
+            imgSo2.setImageResource(R.drawable.ic_indicate_red);
+            isShowDialogFlag = true;
+        }
+        if (toothInfo.getNo() <= now) {
+            imgNo.setImageResource(R.drawable.ic_indicate_green);
+        } else if (toothInfo.getNo() <= noj) {
+            imgNo.setImageResource(R.drawable.ic_indicate_orgin);
+            isShowDialogFlag = true;
+        } else {
+            imgNo.setImageResource(R.drawable.ic_indicate_red);
+            isShowDialogFlag = true;
+        }
+        if (sumJingGao(toothInfo)<1){
+            tv_all.setText("综合指数:良好");
+            img_all.setImageResource(R.drawable.ic_indicate_green);
+        }else if (sumbaojing(toothInfo)<1){
+            tv_all.setText("综合指数:危险");
+            img_all.setImageResource(R.drawable.ic_indicate_orgin);
+            isShowDialogFlag = true;
+        }else {
+            img_all.setImageResource(R.drawable.ic_indicate_red);
+            isShowDialogFlag = true;
+            tv_all.setText("综合指数:警报");
+        }
+        if (isShowDialogFlag){
+            showWarnDialog();
+        }
+        if (isShowSoundFlag&&!isPlaySound){
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    showHintSound();
+                }
+            }).start();
+
+        }
+
+
+    }
+    private void showWarnDialog(){
+        new DialogUtils(getActivity(), R.layout.view_order_cloes_dialog2) {
+            @Override
+            public void initLayout(ViewHelper helper, final Dialog dialog) {
+                 helper.setViewClick(R.id.tv_ok, new ViewHelper.ViewClickCallBack() {
+                     @Override
+                     public void doClickAction(View v) {
+                         dialog.dismiss();
+                     }
+                 });
+            }
+        };
+
+    }
+
+    private double sumJingGao(ToothInfoBean toothInfo) {
+        double a = toothInfo.getJaquan()/jqw+toothInfo.getBen()/benw+toothInfo.getCo2()/co2w
+                + toothInfo.getCo()/cow+toothInfo.getSo2()/so2w+toothInfo.getNo()/now;
+        return a;
+    }
+
+    private double sumbaojing(ToothInfoBean toothInfo) {
+        double a = toothInfo.getJaquan()/jqj+toothInfo.getBen()/benj+toothInfo.getCo2()/co2j
+                + toothInfo.getCo()/coj+toothInfo.getSo2()/so2j+toothInfo.getNo()/noj;
+        return a;
     }
 
 
@@ -170,7 +336,44 @@ public class SetFragment extends BaseFragment {
         mBlthChatUtil = BluetoothChatUtil.getInstance(mContext);
         mBlthChatUtil.registerHandler(mHandler);
         mProgressDialog = new ProgressDialog(getActivity());
+
+        player  = MediaPlayer.create(getActivity(),R.raw.warn);
+
     }
+
+    //播放声音
+    private void showHintSound() {
+        if (isPlaySound) {
+            return;
+        }
+        isPlaySound = true;
+
+
+        int time = 0;
+        boolean flag = (boolean) SharePreferencesUtil.readObject(getActivity(), ConstantsUtils.SP_TIME);
+        if (flag) {
+            time = 1000 * 20;
+        } else {
+            time = 1000 * 10;
+        }
+        player.reset();
+        player=MediaPlayer.create(getActivity(), R.raw.warn);//重新设置要播放的音频
+        player.start();
+        try {
+            Thread.sleep(time);
+            stopHintSound();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    //暂停
+    private void stopHintSound() {
+       player.stop();
+        isPlaySound = false;
+    }
+
 
 
     private void initBluetooth() {
@@ -199,6 +402,10 @@ public class SetFragment extends BaseFragment {
         super.onDestroy();
         mBlthChatUtil = null;
         getActivity().unregisterReceiver(mBluetoothReceiver);
+        if(player.isPlaying()){
+            player.stop();
+        }
+        player.release();//释放资源
     }
 
 
@@ -215,13 +422,12 @@ public class SetFragment extends BaseFragment {
             }
         }
         String mubiao = (String) SharePreferencesUtil.readObject(getActivity(), ConstantsUtils.SP_MU_BIAO_DEVICE_INFO);
-        if (mubiao==null||mubiao.equals("")){
+        if (mubiao == null || mubiao.equals("")) {
             tv_mubiao.setText("目标设备：无");
-        }else {
+        } else {
             BLUETOOTH_NAME = mubiao;
-            tv_mubiao.setText("目标设备："+BLUETOOTH_NAME);
+            tv_mubiao.setText("目标设备：" + BLUETOOTH_NAME);
         }
-
     }
 
 
@@ -279,7 +485,7 @@ public class SetFragment extends BaseFragment {
     }
 
 
-    @OnClick({R.id.tv_right, R.id.btn_blth_connect,R.id.btn_blth_disconnect})
+    @OnClick({R.id.tv_right, R.id.btn_blth_connect, R.id.btn_blth_disconnect})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_right:
@@ -288,14 +494,14 @@ public class SetFragment extends BaseFragment {
             case R.id.btn_blth_disconnect:
                 if (mBlthChatUtil.getState() != BluetoothChatUtil.STATE_CONNECTED) {
                     showToast("蓝牙未连接");
-                }else {
+                } else {
                     mBlthChatUtil.disconnect();
                 }
                 break;
             case R.id.btn_blth_connect:
                 if (mBlthChatUtil.getState() == BluetoothChatUtil.STATE_CONNECTED) {
                     showToast("蓝牙已连接");
-                }else {
+                } else {
                     discoveryDevices();
                 }
                 break;

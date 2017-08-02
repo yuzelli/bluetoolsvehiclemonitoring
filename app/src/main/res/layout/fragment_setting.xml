@@ -51,11 +51,40 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tv_all"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:gravity="center"
+                        android:layout_gravity="center_horizontal"
+                        android:text="甲醛:"
+                        android:textColor="@color/black"
+                        android:textSize="20sp" />
+
+                    <ImageView
+                        android:id="@+id/img_all"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:scaleType="centerCrop"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/ic_indicate_green" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/darkgrey" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
                         android:id="@+id/tv_jiaquan"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="5dp"
-                        android:text="甲醛:1200pmm"
+                        android:text="甲醛:"
                         android:textColor="@color/black"
                         android:textSize="20sp" />
 
@@ -83,7 +112,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="5dp"
-                        android:text="苯 :1200pmm"
+                        android:text="苯 :"
                         android:textColor="@color/black"
                         android:textSize="20sp" />
 
@@ -110,7 +139,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="5dp"
-                        android:text="二氧化碳:1200pmm"
+                        android:text="二氧化碳:"
                         android:textColor="@color/black"
                         android:textSize="20sp" />
 
@@ -137,7 +166,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="5dp"
-                        android:text="一氧化碳:1200pmm"
+                        android:text="一氧化碳:"
                         android:textColor="@color/black"
                         android:textSize="20sp" />
 
@@ -164,7 +193,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="5dp"
-                        android:text="二氧化硫:1200pmm"
+                        android:text="二氧化硫:"
                         android:textColor="@color/black"
                         android:textSize="20sp" />
 
@@ -191,7 +220,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="5dp"
-                        android:text="氮氧化合物:1200pmm"
+                        android:text="氮氧化合物:"
                         android:textColor="@color/black"
                         android:textSize="20sp" />
 
@@ -241,31 +270,29 @@
     <LinearLayout
         android:id="@+id/ll_bottom"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:layout_alignParentBottom="true">
         <Button
             android:id="@+id/btn_blth_connect"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:layout_weight="1"
-            android:layout_marginBottom="5dp"
             android:background="#6CAE6C"
             android:textSize="20sp"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:textColor="@color/white"
             android:layout_below="@+id/include_common_topbar"
             android:text="连接设备"/>
         <Button
             android:id="@+id/btn_blth_disconnect"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:layout_weight="1"
-            android:layout_marginBottom="5dp"
             android:background="#6CAE6C"
             android:textSize="20sp"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:textColor="@color/white"
             android:layout_below="@+id/include_common_topbar"
             android:text="断开设备"/>

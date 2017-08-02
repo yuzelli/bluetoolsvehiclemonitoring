@@ -59,6 +59,7 @@ public class DeviceSetActivity extends BaseActivity {
         tvRight.setVisibility(View.GONE);
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        searchDervice();
     }
 
     @Override
@@ -103,6 +104,11 @@ public class DeviceSetActivity extends BaseActivity {
 //                    mProgressDialog.setTitle(getResources().getString(R.string.progress_connecting));                   //连接到设备。
 //                    mBlthChatUtil.connect(scanDevice);
 //                }
+                for (String a : searchDevice){
+                    if(a.equals(name)){
+                        return;
+                    }
+                }
 
                 searchDevice.add(scanDevice.getName());
                 upDataSearchListView();

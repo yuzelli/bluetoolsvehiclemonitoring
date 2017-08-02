@@ -2,6 +2,7 @@ package com.example.yuzelli.bluetoolsvehiclemonitoring.view.fragment;
 
 import android.content.Context;
 import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +40,8 @@ public class WraningFragment extends BaseFragment {
     SeekBar mMusicVolume;
 
 
+
+
     @Override
     protected int layoutInit() {
         return R.layout.fragment_wraning;
@@ -49,10 +52,12 @@ public class WraningFragment extends BaseFragment {
         ivLeft.setVisibility(View.GONE);
         tvCenter.setText("警告设置");
         tvRight.setVisibility(View.GONE);
+        mAudioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
         upDataView();
+
     }
 
-    AudioManager mAudioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
+    AudioManager mAudioManager ;
 
     private void upDataView() {
 
@@ -80,14 +85,18 @@ public class WraningFragment extends BaseFragment {
     protected void fillData() {
 
     }
+
+
     @OnClick({R.id.tv_shout, R.id.tv_long})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_shout:
                 SharePreferencesUtil.saveObject(getActivity(), ConstantsUtils.SP_TIME,false);
+                showToast("报警时间设置为10s");
                 break;
             case R.id.tv_long:
                 SharePreferencesUtil.saveObject(getActivity(), ConstantsUtils.SP_TIME,true);
+                showToast("报警时间设置为20s");
                 break;
         }
     }

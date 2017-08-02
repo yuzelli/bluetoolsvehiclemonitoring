@@ -35,6 +35,7 @@ public class OtherUtils {
     public static long date2TimeStamp(String date_str){
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String a = sdf.parse(date_str).getTime()/1000+"";
             return sdf.parse(date_str).getTime()/1000;
         } catch (Exception e) {
             e.printStackTrace();

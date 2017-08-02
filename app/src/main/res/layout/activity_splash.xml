@@ -24,7 +24,7 @@
         android:textSize="25sp"
         android:id="@+id/tv_title"
         android:layout_centerInParent="true"
-        android:text="欢迎使用美食速递app"/>
+        android:text="欢迎使用车载气体监控系统"/>
 
     <TextView
         android:layout_width="match_parent"
