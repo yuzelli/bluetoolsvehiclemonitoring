@@ -11,21 +11,23 @@
         android:id="@+id/tv_mubiao"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:gravity="center"
         android:layout_below="@+id/include_common_topbar"
-        android:textSize="20sp"
-        android:text="目标设备：无"/> <TextView
+        android:gravity="center"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:text="目标设备：无"
+        android:textSize="20sp" />
+
+    <TextView
         android:id="@+id/tv_connect_state"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:gravity="center"
         android:layout_below="@+id/tv_mubiao"
-        android:textSize="20sp"
-        android:text="当前无连接设备"/>
+        android:gravity="center"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:text="当前无连接设备"
+        android:textSize="20sp" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -54,10 +56,10 @@
                         android:id="@+id/tv_all"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="5dp"
-                        android:gravity="center"
                         android:layout_gravity="center_horizontal"
-                        android:text="甲醛:"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="综合指标:"
                         android:textColor="@color/black"
                         android:textSize="20sp" />
 
@@ -65,8 +67,8 @@
                         android:id="@+id/img_all"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        android:scaleType="centerCrop"
                         android:layout_gravity="center_horizontal"
+                        android:scaleType="centerCrop"
                         android:src="@drawable/ic_indicate_green" />
                 </LinearLayout>
 
@@ -74,6 +76,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:background="@color/darkgrey" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -88,12 +91,45 @@
                         android:textColor="@color/black"
                         android:textSize="20sp" />
 
-                    <ImageView
-                        android:id="@+id/img_jiaquan"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/ic_indicate_green" />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp">
+
+                        <ImageView
+                            android:id="@+id/img_jiaquan"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_indicate_green" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="100dp"
+                            android:layout_marginTop="5dp"
+                            android:text="正常值为：小于0.02mg/m³"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="100dp"
+                            android:text="危险值为：0.02mg/m³～0.06mg/m³"
+
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginLeft="100dp"
+                            android:text="警报值为：大于0.06mg/m³"
+                            android:textSize="14sp" />
+                    </RelativeLayout>
+
+
                 </LinearLayout>
 
                 <View
@@ -116,12 +152,44 @@
                         android:textColor="@color/black"
                         android:textSize="20sp" />
 
-                    <ImageView
-                        android:id="@+id/img_ben"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/ic_indicate_green" />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp">
+
+                        <ImageView
+                            android:id="@+id/img_ben"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_indicate_green" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="100dp"
+                            android:layout_marginTop="5dp"
+                            android:text="正常值为：小于1mg/m³"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="100dp"
+                            android:text="危险值为：1mg/m³～24mg/m³"
+
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginLeft="100dp"
+                            android:text="警报值为：大于24mg/m³"
+                            android:textSize="14sp" />
+                    </RelativeLayout>
+
                 </LinearLayout>
 
                 <View
@@ -143,12 +211,44 @@
                         android:textColor="@color/black"
                         android:textSize="20sp" />
 
-                    <ImageView
-                        android:id="@+id/img_co2"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/ic_indicate_green" />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="100dp"
+                            android:layout_marginTop="5dp"
+                            android:text="正常值为：小于1000mg/m³"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="100dp"
+                            android:text="危险值为：1000mg/m³～2000mg/m³"
+
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginLeft="100dp"
+                            android:text="警报值为：大于2000mg/m³"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:id="@+id/img_co2"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_indicate_green" />
+
+                    </RelativeLayout>
                 </LinearLayout>
 
                 <View
@@ -170,12 +270,43 @@
                         android:textColor="@color/black"
                         android:textSize="20sp" />
 
-                    <ImageView
-                        android:id="@+id/img_co"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/ic_indicate_green" />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="100dp"
+                            android:layout_marginTop="5dp"
+                            android:text="正常值为：小于200mg/m³"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="100dp"
+                            android:text="危险值为：200mg/m³～400mg/m³"
+
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:id="@+id/img_co"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_indicate_green" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginLeft="100dp"
+                            android:text="警报值为：大于400    mg/m³"
+                            android:textSize="14sp" />
+                    </RelativeLayout>
                 </LinearLayout>
 
                 <View
@@ -197,12 +328,43 @@
                         android:textColor="@color/black"
                         android:textSize="20sp" />
 
-                    <ImageView
-                        android:id="@+id/img_so2"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/ic_indicate_green" />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="100dp"
+                            android:layout_marginTop="5dp"
+                            android:text="正常值为：小于3mg/m³"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="100dp"
+                            android:text="危险值为：3mg/m³～20mg/m³"
+
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:id="@+id/img_so2"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_indicate_green" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginLeft="100dp"
+                            android:text="警报值为：大于20mg/m³"
+                            android:textSize="14sp" />
+                    </RelativeLayout>
                 </LinearLayout>
 
                 <View
@@ -224,12 +386,44 @@
                         android:textColor="@color/black"
                         android:textSize="20sp" />
 
-                    <ImageView
-                        android:id="@+id/img_no"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/ic_indicate_green" />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="100dp"
+                            android:layout_marginTop="5dp"
+                            android:text="正常值为：小于5mg/m³"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="100dp"
+                            android:text="危险值为：5mg/m³～20mg/m³"
+
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:id="@+id/img_no"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_indicate_green" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginLeft="100dp"
+                            android:text="警报值为：大于20mg/m³"
+                            android:textSize="14sp" />
+                    </RelativeLayout>
+
                 </LinearLayout>
 
                 <View
@@ -267,35 +461,38 @@
         </RelativeLayout>
 
     </FrameLayout>
+
     <LinearLayout
         android:id="@+id/ll_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
         android:layout_marginBottom="5dp"
-        android:layout_alignParentBottom="true">
+        android:orientation="horizontal">
+
         <Button
             android:id="@+id/btn_blth_connect"
             android:layout_width="0dp"
             android:layout_height="40dp"
+            android:layout_below="@+id/include_common_topbar"
+            android:layout_margin="5dp"
             android:layout_weight="1"
             android:background="#6CAE6C"
-            android:textSize="20sp"
-            android:layout_margin="5dp"
+            android:text="连接设备"
             android:textColor="@color/white"
-            android:layout_below="@+id/include_common_topbar"
-            android:text="连接设备"/>
+            android:textSize="20sp" />
+
         <Button
             android:id="@+id/btn_blth_disconnect"
             android:layout_width="0dp"
             android:layout_height="40dp"
+            android:layout_below="@+id/include_common_topbar"
+            android:layout_margin="5dp"
             android:layout_weight="1"
             android:background="#6CAE6C"
-            android:textSize="20sp"
-            android:layout_margin="5dp"
+            android:text="断开设备"
             android:textColor="@color/white"
-            android:layout_below="@+id/include_common_topbar"
-            android:text="断开设备"/>
+            android:textSize="20sp" />
     </LinearLayout>
 
 

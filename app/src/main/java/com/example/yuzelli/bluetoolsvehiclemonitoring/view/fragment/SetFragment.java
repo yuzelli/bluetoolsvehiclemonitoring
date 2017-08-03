@@ -31,6 +31,7 @@ import com.example.yuzelli.bluetoolsvehiclemonitoring.constants.ConstantsUtils;
 import com.example.yuzelli.bluetoolsvehiclemonitoring.utils.BluetoothChatUtil;
 import com.example.yuzelli.bluetoolsvehiclemonitoring.utils.DialogUtils;
 import com.example.yuzelli.bluetoolsvehiclemonitoring.utils.SharePreferencesUtil;
+import com.example.yuzelli.bluetoolsvehiclemonitoring.utils.VibratorUtil;
 import com.example.yuzelli.bluetoolsvehiclemonitoring.view.activity.DeviceSetActivity;
 import com.google.gson.Gson;
 
@@ -137,7 +138,6 @@ public class SetFragment extends BaseFragment {
                     byte[] buf = msg.getData().getByteArray(BluetoothChatUtil.READ_MSG);
                     String str = new String(buf, 0, buf.length);
                     //Toast.makeText(getApplicationContext(), "读成功" + str, Toast.LENGTH_SHORT).show();
-                    showToast("读成功" + "-->" + str);
 
                     toothInfo =getToothInfo(str);
                     updataView();
@@ -167,7 +167,7 @@ public class SetFragment extends BaseFragment {
             t.setBen(json.getDouble("ben"));
             t.setCo2(json.getDouble("co2"));
             t.setCo(json.getDouble("co"));
-            t.setSo2(json.getDouble("sc2"));
+            t.setSo2(json.getDouble("so2"));
             t.setNo(json.getDouble("no"));
         } catch (JSONException e) {
             e.printStackTrace();
@@ -207,9 +207,9 @@ public class SetFragment extends BaseFragment {
 
         tvJiaquan.setText("甲醛：" + toothInfo.getJaquan() + "mg/m³");
         tvBen.setText("苯：" + toothInfo.getBen() + "mg/m³");
-        tvCo2.setText("二氧化碳" + toothInfo.getCo2() + "mg/m³");
-        tvCo.setText("一氧化碳" + toothInfo.getCo() + "mg/m³");
-        tvSo2.setText("二氧化硫" + toothInfo.getSo2() + "mg/m³");
+        tvCo2.setText("二氧化碳：" + toothInfo.getCo2() + "mg/m³");
+        tvCo.setText("一氧化碳：" + toothInfo.getCo() + "mg/m³");
+        tvSo2.setText("二氧化硫：" + toothInfo.getSo2() + "mg/m³");
         tvNo.setText("氮氧化合物：" + toothInfo.getNo() + "mg/m³");
         if (toothInfo.getJaquan() <= jqw) {
             imgJiaquan.setImageResource(R.drawable.ic_indicate_green);
@@ -337,7 +337,7 @@ public class SetFragment extends BaseFragment {
         mBlthChatUtil.registerHandler(mHandler);
         mProgressDialog = new ProgressDialog(getActivity());
 
-        player  = MediaPlayer.create(getActivity(),R.raw.warn);
+        player  = MediaPlayer.create(getActivity(),R.raw.warnn);
 
     }
 
@@ -356,9 +356,12 @@ public class SetFragment extends BaseFragment {
         } else {
             time = 1000 * 10;
         }
+
         player.reset();
-        player=MediaPlayer.create(getActivity(), R.raw.warn);//重新设置要播放的音频
+        player=MediaPlayer.create(getActivity(), R.raw.warnn);//重新设置要播放的音频
+        player.setLooping(true);
         player.start();
+        VibratorUtil.Vibrate(getActivity(), time);   //震动100ms
         try {
             Thread.sleep(time);
             stopHintSound();
@@ -371,6 +374,7 @@ public class SetFragment extends BaseFragment {
     //暂停
     private void stopHintSound() {
        player.stop();
+        VibratorUtil.stopVib();
         isPlaySound = false;
     }
 
@@ -428,6 +432,9 @@ public class SetFragment extends BaseFragment {
             BLUETOOTH_NAME = mubiao;
             tv_mubiao.setText("目标设备：" + BLUETOOTH_NAME);
         }
+//        toothInfo = new ToothInfoBean(100,100,100,100,100,100);
+//
+//        updataView();
     }
 
 
