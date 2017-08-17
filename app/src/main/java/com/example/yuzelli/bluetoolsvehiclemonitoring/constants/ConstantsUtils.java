@@ -13,6 +13,7 @@ public class ConstantsUtils {
     public static final String SP_LOGIN_USER_INFO = "UserInfo";
     public static final String SP_MU_BIAO_DEVICE_INFO = "MUBIAOSHEBEI";
     public static final String SP_TIME = "TIME_SETING";
+    public static final String SP_ON_OFF = "TIME_ON+OFF";
 
 
 

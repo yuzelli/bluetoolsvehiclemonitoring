@@ -1,15 +1,18 @@
 package com.example.yuzelli.bluetoolsvehiclemonitoring.view.fragment;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.example.yuzelli.bluetoolsvehiclemonitoring.R;
 import com.example.yuzelli.bluetoolsvehiclemonitoring.base.BaseFragment;
@@ -20,6 +23,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by 51644 on 2017/7/30.
@@ -38,6 +43,8 @@ public class WraningFragment extends BaseFragment {
     TextView tvRight;
     @BindView(R.id.mMusicVolume)
     SeekBar mMusicVolume;
+    @BindView(R.id.toggle_on_off)
+    ToggleButton toggle_on_off;
 
 
 
@@ -53,9 +60,34 @@ public class WraningFragment extends BaseFragment {
         tvCenter.setText("警告设置");
         tvRight.setVisibility(View.GONE);
         mAudioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
+
+
+        toggle_on_off.setChecked(doReaad());
+        toggle_on_off.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                doSave(b);
+
+            }
+        });
+
         upDataView();
 
+
     }
+
+    private void doSave(boolean flag) {
+        SharedPreferences.Editor editor = getActivity().getSharedPreferences("dates",MODE_PRIVATE).edit();
+        editor.putBoolean("married", flag);
+        editor.commit();
+    }
+
+    private boolean doReaad() {
+        SharedPreferences pref = getActivity().getSharedPreferences("dates",MODE_PRIVATE);
+        boolean married = pref.getBoolean("married",true);
+        return married;
+    }
+
 
     AudioManager mAudioManager ;
 

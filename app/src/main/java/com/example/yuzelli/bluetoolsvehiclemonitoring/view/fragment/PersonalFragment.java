@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +28,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by 51644 on 2017/7/6.
@@ -73,6 +76,8 @@ public class PersonalFragment extends BaseFragment {
         tvName.setText(userInfo.getUserName());
         tvPhone.setText(userInfo.getMobile());
     }
+
+
 
     @Override
     protected void fillData() {

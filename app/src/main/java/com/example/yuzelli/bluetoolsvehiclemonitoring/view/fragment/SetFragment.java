@@ -1,5 +1,6 @@
 package com.example.yuzelli.bluetoolsvehiclemonitoring.view.fragment;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -10,9 +11,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +51,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by 51644 on 2017/7/30.
@@ -139,7 +148,7 @@ public class SetFragment extends BaseFragment {
                     String str = new String(buf, 0, buf.length);
                     //Toast.makeText(getApplicationContext(), "读成功" + str, Toast.LENGTH_SHORT).show();
 
-                    toothInfo =getToothInfo(str);
+                    toothInfo = getToothInfo(str);
                     updataView();
                     break;
                 }
@@ -158,7 +167,7 @@ public class SetFragment extends BaseFragment {
     };
 
     private ToothInfoBean getToothInfo(String str) {
-        str = str.substring(0,str.indexOf("}")+1);
+        str = str.substring(0, str.indexOf("}") + 1);
         ToothInfoBean t = new ToothInfoBean();
         try {
             JSONObject json = new JSONObject(str);
@@ -196,14 +205,15 @@ public class SetFragment extends BaseFragment {
     private final static double noj = 20f;
     boolean isShowDialogFlag = false;
     boolean isShowSoundFlag = false;
+
     private void updataView() {
-        if (dialog!=null){
+        if (dialog != null) {
             if (dialog.isShowing()) {
                 dialog.dismiss();
             }
         }
-         isShowDialogFlag = false;
-         isShowSoundFlag = false;
+        isShowDialogFlag = false;
+        isShowSoundFlag = false;
 
         tvJiaquan.setText("甲醛：" + toothInfo.getJaquan() + "mg/m³");
         tvBen.setText("苯：" + toothInfo.getBen() + "mg/m³");
@@ -265,22 +275,22 @@ public class SetFragment extends BaseFragment {
             imgNo.setImageResource(R.drawable.ic_indicate_red);
             isShowDialogFlag = true;
         }
-        if (sumJingGao(toothInfo)<1){
+        if (sumJingGao(toothInfo) < 1) {
             tv_all.setText("综合指数:良好");
             img_all.setImageResource(R.drawable.ic_indicate_green);
-        }else if (sumbaojing(toothInfo)<1){
+        } else if (sumbaojing(toothInfo) < 1) {
             tv_all.setText("综合指数:危险");
             img_all.setImageResource(R.drawable.ic_indicate_orgin);
             isShowDialogFlag = true;
-        }else {
+        } else {
             img_all.setImageResource(R.drawable.ic_indicate_red);
             isShowDialogFlag = true;
             tv_all.setText("综合指数:警报");
         }
-        if (isShowDialogFlag){
+        if (isShowDialogFlag) {
             showWarnDialog();
         }
-        if (isShowSoundFlag&&!isPlaySound){
+        if (isShowSoundFlag && !isPlaySound&&doReaad()) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -292,33 +302,39 @@ public class SetFragment extends BaseFragment {
 
 
     }
-    private void showWarnDialog(){
+
+    private void showWarnDialog() {
         new DialogUtils(getActivity(), R.layout.view_order_cloes_dialog2) {
             @Override
             public void initLayout(ViewHelper helper, final Dialog dialog) {
-                 helper.setViewClick(R.id.tv_ok, new ViewHelper.ViewClickCallBack() {
-                     @Override
-                     public void doClickAction(View v) {
-                         dialog.dismiss();
-                     }
-                 });
+                helper.setViewClick(R.id.tv_ok, new ViewHelper.ViewClickCallBack() {
+                    @Override
+                    public void doClickAction(View v) {
+                        dialog.dismiss();
+                    }
+                });
             }
         };
 
     }
 
     private double sumJingGao(ToothInfoBean toothInfo) {
-        double a = toothInfo.getJaquan()/jqw+toothInfo.getBen()/benw+toothInfo.getCo2()/co2w
-                + toothInfo.getCo()/cow+toothInfo.getSo2()/so2w+toothInfo.getNo()/now;
+        double a = toothInfo.getJaquan() / jqw + toothInfo.getBen() / benw + toothInfo.getCo2() / co2w
+                + toothInfo.getCo() / cow + toothInfo.getSo2() / so2w + toothInfo.getNo() / now;
         return a;
     }
 
     private double sumbaojing(ToothInfoBean toothInfo) {
-        double a = toothInfo.getJaquan()/jqj+toothInfo.getBen()/benj+toothInfo.getCo2()/co2j
-                + toothInfo.getCo()/coj+toothInfo.getSo2()/so2j+toothInfo.getNo()/noj;
+        double a = toothInfo.getJaquan() / jqj + toothInfo.getBen() / benj + toothInfo.getCo2() / co2j
+                + toothInfo.getCo() / coj + toothInfo.getSo2() / so2j + toothInfo.getNo() / noj;
         return a;
     }
 
+    private boolean doReaad() {
+        SharedPreferences pref = getActivity().getSharedPreferences("dates",MODE_PRIVATE);
+        boolean married = pref.getBoolean("married",true);
+        return married;
+    }
 
     @Override
     protected int layoutInit() {
@@ -332,12 +348,30 @@ public class SetFragment extends BaseFragment {
         tvRight.setText("目标设备");
         tvRight.setVisibility(View.VISIBLE);
         mContext = getActivity();
-        initBluetooth();
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            //校验是否已具有模糊定位权限
+            if (ContextCompat.checkSelfPermission(getActivity(),
+                    Manifest.permission.ACCESS_COARSE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                        10125);
+            } else {
+                //具有权限
+                initBluetooth();
+            }
+        } else {
+            //系统不高于6.0直接执行
+            initBluetooth();
+        }
+
+
         mBlthChatUtil = BluetoothChatUtil.getInstance(mContext);
         mBlthChatUtil.registerHandler(mHandler);
         mProgressDialog = new ProgressDialog(getActivity());
 
-        player  = MediaPlayer.create(getActivity(),R.raw.warnn);
+        player = MediaPlayer.create(getActivity(), R.raw.warnn);
 
     }
 
@@ -358,7 +392,7 @@ public class SetFragment extends BaseFragment {
         }
 
         player.reset();
-        player=MediaPlayer.create(getActivity(), R.raw.warnn);//重新设置要播放的音频
+        player = MediaPlayer.create(getActivity(), R.raw.warnn);//重新设置要播放的音频
         player.setLooping(true);
         player.start();
         VibratorUtil.Vibrate(getActivity(), time);   //震动100ms
@@ -373,11 +407,10 @@ public class SetFragment extends BaseFragment {
 
     //暂停
     private void stopHintSound() {
-       player.stop();
+        player.stop();
         VibratorUtil.stopVib();
         isPlaySound = false;
     }
-
 
 
     private void initBluetooth() {
@@ -399,6 +432,8 @@ public class SetFragment extends BaseFragment {
         filter.addAction(BluetoothDevice.ACTION_FOUND);
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         getActivity().registerReceiver(mBluetoothReceiver, filter);
+
+
     }
 
     @Override
@@ -406,7 +441,7 @@ public class SetFragment extends BaseFragment {
         super.onDestroy();
         mBlthChatUtil = null;
         getActivity().unregisterReceiver(mBluetoothReceiver);
-        if(player.isPlaying()){
+        if (player.isPlaying()) {
             player.stop();
         }
         player.release();//释放资源
@@ -514,4 +549,18 @@ public class SetFragment extends BaseFragment {
                 break;
         }
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 10125) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //同意权限
+              initBluetooth();
+            } else {
+
+            }
+        }
+    }
+
 }
